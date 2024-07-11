@@ -22,7 +22,7 @@ export default function App() {
         .then(response => setTodos(response.data))
         .catch(error => console.log(error))
   }
-  function addTodo(newTodo: Todo) {
+  function addTodo(newTodo:  Todo) {
 
     axios.post("/api/todo", newTodo)
         .then(() => {
