@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -23,10 +22,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // NOSONAR: Disabling CSRF protection is safe here because [reason]
-                .csrf(csrf -> csrf // CSRF-Konfiguration spezifizieren
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()) // CSRF-Token-Repository konfigurieren
-                )
+                // NOSONAR: Disabling CSRF protection is safe here because i run this application only locally!
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(a -> a
                         //Reihenfolge relevant! Erst die strengen Einschränkungen, weil es wird von oben nach unten durchgearbeitet
                         .requestMatchers(HttpMethod.DELETE, "/api/todo/*").authenticated()
