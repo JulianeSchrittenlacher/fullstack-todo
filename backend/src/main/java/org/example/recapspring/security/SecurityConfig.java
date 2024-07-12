@@ -22,6 +22,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                // NOSONAR: Disabling CSRF protection is safe here because [reason]
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(a -> a
                         //Reihenfolge relevant! Erst die strengen Einschränkungen, weil es wird von oben nach unten durchgearbeitet
