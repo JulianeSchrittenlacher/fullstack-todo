@@ -22,21 +22,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                // NOSONAR: Disabling CSRF protection is safe here because i run this application only locally!
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(a -> a
-                        //Reihenfolge relevant! Erst die strengen Einschränkungen, weil es wird von oben nach unten durchgearbeitet
                         .requestMatchers(HttpMethod.DELETE, "/api/todo/*").authenticated()
                         .requestMatchers("/api/auth/me").authenticated()
                         .requestMatchers("/api/todo/*").permitAll()
                         .anyRequest().permitAll())
 
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
-                .exceptionHandling(e -> e
-                        .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login(o -> o.defaultSuccessUrl(appUrl))
                 .logout(l -> l.logoutSuccessUrl(appUrl))
                 .build();
     }
-
 }
