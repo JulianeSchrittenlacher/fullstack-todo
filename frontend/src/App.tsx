@@ -8,6 +8,7 @@ import Header from "./Components/Header.tsx";
 import {TodoStatus} from "./Types/TodoStatus.ts";
 import {Todo} from "./Types/Todo.ts";
 import ProtectedRoute from "./Components/ProtectedRoute.tsx";
+import EditTodo from "./Components/EditTodo.tsx";
 
 export default function App() {
   const [todos,setTodos] = useState<Todo[]>([]);
@@ -24,6 +25,7 @@ export default function App() {
         .then(response => setTodos(response.data))
         .catch(error => console.log(error))
   }
+
   function addTodo(newTodo:  Todo) {
 
     axios.post("/api/todo", newTodo)
@@ -58,6 +60,16 @@ export default function App() {
         .then(getTodos)
         .catch(error => console.log(error));
   }
+
+function editTodo(id:string, updatedTodo:Todo) {
+      navigate('todo/')
+      axios.put(`/api/todo/${id}`, updatedTodo)
+          .then(() => {
+              getTodos();
+              navigate('/todo/home');
+          })
+          .catch(error => console.error("Error updating Todo: ", error));
+}
 
   const login = () => {
     const host = window.location.host === 'localhost:5173' ? 'http://localhost:8080' : window.location.origin
@@ -110,25 +122,25 @@ export default function App() {
 
         <div className="App">
           <nav className="App-nav">
-            <ul>
-              <li>
-                <NavLink to="/" className={({isActive}) => (isActive ? "active-link" : "")}>
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/todo/create" className={({isActive}) => (isActive ? "active-link" : "")}>
-                  Add Todo
-                </NavLink>
-              </li>
-            </ul>
+              <ul>
+                  <li>
+                      <NavLink to="/todo/home" className={({isActive}) => (isActive ? "active-link" : "")}>
+                          Home
+                      </NavLink>
+                  </li>
+                  <li>
+                      <NavLink to="/todo/create" className={({isActive}) => (isActive ? "active-link" : "")}>
+                          Add Todo
+                      </NavLink>
+                  </li>
+              </ul>
           </nav>
-          <Routes>
-            <Route element={<ProtectedRoute user={user}/>}/>
-            <Route path="/"
-                   element={<TodoGallery todos={todos} updateTodoStatus={updateTodoStatus} deleteTodo={deleteTodo}/>}/>
-            <Route path="/todo/create" element={<CreateTodo addTodo={addTodo}/>}/>
-            <Route path="/profile" element={<p>{user}</p>}/>
+            <Routes>
+                <Route element={<ProtectedRoute user={user}/>}/>
+                <Route path="/todo/home" element={<TodoGallery todos={todos} updateTodoStatus={updateTodoStatus} deleteTodo={deleteTodo} editTodo={editTodo}/>}/>
+                <Route path="/todo/create" element={<CreateTodo addTodo={addTodo}/>}/>
+                <Route path="/todo/edit/:id" element={<EditTodo todos={todos} editTodo={editTodo}/>}/>
+                <Route path="/profile" element={<p>{user}</p>}/>
           </Routes>
         </div>
       </>

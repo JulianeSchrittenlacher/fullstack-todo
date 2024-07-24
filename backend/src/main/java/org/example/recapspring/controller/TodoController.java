@@ -14,7 +14,9 @@ import java.util.List;
 
 
 public class TodoController {
+
     private final TodoService todoService;
+
     @PostMapping
     public Todo saveTodo(@RequestBody TodoDTO todoDTO) {
         return todoService.saveTodo(todoDTO);
@@ -34,6 +36,7 @@ public class TodoController {
     public Todo updateTodo(@PathVariable String id, @RequestBody TodoDTO todoDTO) {
         return todoService.updateTodo(id,todoDTO);
     }
+
     @DeleteMapping("/{id}")
     public void deleteTodo(@PathVariable String id) {
         todoService.deleteTodo(id);
