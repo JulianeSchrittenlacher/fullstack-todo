@@ -7,9 +7,10 @@ type TodoGalleryProps = {
     todos: Todo[];
     updateTodoStatus: (id: string, description: string, status: 'OPEN' | 'IN_PROGRESS' | 'DONE') => void;
     deleteTodo: (id: string) => void;
+    editTodo: (id:string, updatedTodo:Todo) => void;
 }
 
-export default function TodoGallery({todos, updateTodoStatus, deleteTodo}: TodoGalleryProps) {
+export default function TodoGallery({todos, updateTodoStatus, deleteTodo, editTodo}: TodoGalleryProps) {
     const [openTodos, setOpenTodos] = useState<Todo[]>([]);
     const [inProgressTodos, setInProgressTodos] = useState<Todo[]>([]);
     const [doneTodos, setDoneTodos] = useState<Todo[]>([]);
@@ -38,6 +39,7 @@ export default function TodoGallery({todos, updateTodoStatus, deleteTodo}: TodoG
                                 status={todo.status}
                                 updateStatus={updateTodoStatus}
                                 deleteTodo={deleteTodo}
+                                editTodo={editTodo}
                             />
                         ))}
                     </div>
@@ -56,6 +58,7 @@ export default function TodoGallery({todos, updateTodoStatus, deleteTodo}: TodoG
                                 status={todo.status}
                                 updateStatus={updateTodoStatus}
                                 deleteTodo={deleteTodo}
+                                editTodo={editTodo}
                             />
                         ))}
                     </div>
@@ -75,6 +78,7 @@ export default function TodoGallery({todos, updateTodoStatus, deleteTodo}: TodoG
                                 status={todo.status}
                                 updateStatus={updateTodoStatus}
                                 deleteTodo={deleteTodo}
+                                editTodo={editTodo}
                             />
                         ))}
                     </div>

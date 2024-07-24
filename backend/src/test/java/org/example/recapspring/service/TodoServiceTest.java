@@ -6,8 +6,6 @@ import org.example.recapspring.model.TodoDTO;
 import org.example.recapspring.repository.Repo;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.stream.events.DTD;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -89,6 +87,14 @@ class TodoServiceTest {
         verify(mockRepo).findById("1");
         verify(mockRepo).save(todo);
         assertEquals(todo, actual);
+
+    }
+
+    @Test
+    void updateTodo_whenCalledWithInvalidId_thenThrowException() {
+        when(mockRepo.findById("1")).thenReturn(Optional.empty());
+        assertThrows(NoSuchElementException.class, () -> service.updateTodo("1",new TodoDTO("Hallo", Status.OPEN)));
+        verify(mockRepo).findById("1");
 
     }
 

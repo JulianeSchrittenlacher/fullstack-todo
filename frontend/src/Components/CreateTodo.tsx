@@ -13,6 +13,7 @@ export default function CreateTodo({addTodo}:{addTodo: (todo:Todo)=> void}) {
             description,
             status:'OPEN',
         };
+
         addTodo(newTodo);
         setDescription('');
         {/*alert("A new Todo was created: " + description)*/}
